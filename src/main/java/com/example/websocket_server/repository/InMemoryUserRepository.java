@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class InMemoryUserRepository implements UserRepository{
@@ -14,13 +15,14 @@ public class InMemoryUserRepository implements UserRepository{
 
     @Override
     public UserDTO saveUser(UserDTO newUser) {
+        System.out.println("인메모리 레파지토리 시작");
         repo.put(newUser.getMobNum(),newUser);
         return repo.get(newUser.getMobNum());
     }
 
     @Override
-    public UserDTO findUser(UserDTO user) {
+    public Optional<UserDTO> findUser(String mobNum) {
 
-        return repo.get(user.getMobNum());
+        return Optional.ofNullable(repo.get(mobNum));
     }
 }

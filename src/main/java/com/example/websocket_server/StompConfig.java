@@ -15,8 +15,8 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
         // /portfolio is the HTTP URL for the endpoint to which a WebSocket (or SockJS)
         // client needs to connect for the WebSocket handshake
         registry.addEndpoint("/websocket-server")
-                .addInterceptors(new HttpHandshakeInterceptor())
-                .setHandshakeHandler(new CustomHandshakeHandler())
+                //.addInterceptors(new HttpHandshakeInterceptor())
+                //.setHandshakeHandler(new CustomHandshakeHandler())
                 .setAllowedOriginPatterns("*");
     }
 

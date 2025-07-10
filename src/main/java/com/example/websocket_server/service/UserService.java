@@ -7,5 +7,5 @@ public interface UserService {
     boolean signUp(UserDTO newUser);
 
     //로그인
-    String signIn(UserDTO user);
+    //String signIn(UserDTO user);
 }

@@ -2,10 +2,12 @@ package com.example.websocket_server.repository;
 
 import com.example.websocket_server.dto.UserDTO;
 
+import java.util.Optional;
+
 public interface UserRepository {
     //회원가입용
     UserDTO saveUser(UserDTO newUser);
 
     //로그인용
-    UserDTO findUser(UserDTO user);
+    Optional<UserDTO> findUser(String mobNum);
 }
