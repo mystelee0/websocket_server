@@ -1,7 +1,7 @@
 package com.example.websocket_server.controller;
 
 import com.example.websocket_server.CustomUserDetails;
-import com.example.websocket_server.dto.UserDTO;
+import com.example.websocket_server.dto.UserAuthDTO;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/login")
-    ResponseEntity loginRequest(@RequestBody UserDTO user, HttpSession session){
+    ResponseEntity loginRequest(@RequestBody UserAuthDTO user, HttpSession session){
         System.out.println("로그인 요청 "+user);
 
         try{
@@ -45,8 +45,11 @@ public class AuthController {
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,SecurityContextHolder.getContext());
 
             CustomUserDetails loginUser = (CustomUserDetails) authentication.getPrincipal();
-            loginUser.getUser().setPassword(null);
-            return ResponseEntity.ok(loginUser.getUser());
+
+            //로그인 성공 시, 응답을 위한 객체 생성 (비밀번호 지우고 클라이언트에 전달)
+            UserAuthDTO forResponse = new UserAuthDTO(loginUser.getUser());
+            forResponse.setPassword(null);
+            return ResponseEntity.ok(forResponse);
 
         }catch (AuthenticationException e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
@@ -60,8 +63,8 @@ public class AuthController {
         if(user==null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
         }
-        user.getUser().setPassword(null);
-
-        return ResponseEntity.ok(user.getUser());
+        UserAuthDTO forResponse = new UserAuthDTO(user.getUser());
+        forResponse.setPassword(null);
+        return ResponseEntity.ok(forResponse);
     }
 }

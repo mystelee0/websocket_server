@@ -1,6 +1,6 @@
 package com.example.websocket_server;
 
-import com.example.websocket_server.dto.UserDTO;
+import com.example.websocket_server.dto.UserAuthDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,13 +9,13 @@ import java.util.List;
 
 public class CustomUserDetails implements UserDetails {
 
-    UserDTO user;
+    UserAuthDTO user;
 
-    public CustomUserDetails(UserDTO user){
+    public CustomUserDetails(UserAuthDTO user){
         this.user=user;
     }
 
-    public UserDTO getUser(){
+    public UserAuthDTO getUser(){
         return user;
     }
     @Override

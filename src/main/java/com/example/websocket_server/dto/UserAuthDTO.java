@@ -2,35 +2,23 @@ package com.example.websocket_server.dto;
 
 import java.util.Objects;
 
-public class UserDTO {
+public class UserAuthDTO {
     String mobNum;
     String nickName;
     String password;
-    String profileImageUrl;
-    String statusMessage;
 
-    public UserDTO(String mobNum, String nickName, String password) {
-        this.mobNum = mobNum;
-        this.nickName = nickName;
-        this.password = password;
-        this.profileImageUrl = "";
-        this.statusMessage = "";
+    public UserAuthDTO(){
+
     }
-
-    public String getProfileImageUrl() {
-        return profileImageUrl;
+    public UserAuthDTO(UserAuthDTO other){
+        this.mobNum = other.getMobNum();
+        this.nickName = other.getNickName();
+        this.password = other.getPassword();
     }
-
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
-    }
-
-    public String getStatusMessage() {
-        return statusMessage;
-    }
-
-    public void setStatusMessage(String statusMessage) {
-        this.statusMessage = statusMessage;
+    public UserAuthDTO(UserDTO other){
+        this.mobNum = other.getMobNum();
+        this.nickName = other.getNickName();
+        this.password = other.getPassword();
     }
 
     public String getMobNum() {
@@ -65,7 +53,7 @@ public class UserDTO {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        UserDTO userDTO = (UserDTO) o;
+        UserAuthDTO userDTO = (UserAuthDTO) o;
         return Objects.equals(mobNum, userDTO.mobNum) && Objects.equals(nickName, userDTO.nickName) && Objects.equals(password, userDTO.password);
     }
 

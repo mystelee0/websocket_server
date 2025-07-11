@@ -1,5 +1,6 @@
 package com.example.websocket_server.controller;
 
+import com.example.websocket_server.dto.UserAuthDTO;
 import com.example.websocket_server.dto.UserDTO;
 import com.example.websocket_server.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    String signUpRequest(@RequestBody UserDTO newUser){
+    String signUpRequest(@RequestBody UserAuthDTO newUser){
         System.out.println("회원가입 요청 "+newUser);
 
         boolean result = userService.signUp(newUser);
