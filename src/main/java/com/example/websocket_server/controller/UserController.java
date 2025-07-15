@@ -3,9 +3,11 @@ package com.example.websocket_server.controller;
 import com.example.websocket_server.dto.UserAuthDTO;
 import com.example.websocket_server.dto.UserDTO;
 import com.example.websocket_server.service.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -23,5 +25,16 @@ public class UserController {
         boolean result = userService.signUp(newUser);
 
         return result?"success":"fail";
+    }
+
+    @GetMapping("/users/{mobNum}")
+    ResponseEntity getUserInfo(@PathVariable String mobNum){
+
+        Optional<UserDTO> user = userService.fetchUserInfo(mobNum);
+
+        if(user.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("데이터 없음");
+        }
+        return ResponseEntity.ok(user.get());
     }
 }
