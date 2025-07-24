@@ -13,7 +13,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
-
     public SecurityConfig(CustomUserDetailsService userDetailsService){
         this.userDetailsService = userDetailsService;
     }
@@ -37,7 +36,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable() // React 연동 시 csrf 토큰 없이 테스트하려면 disable (실서비스시 재설정 필요)
+                .csrf(csrf->csrf.disable()) // React 연동 시 csrf 토큰 없이 테스트하려면 disable (실서비스시 재설정 필요)
                 .cors()           // Cors 설정 활성화
                 .and()
                 .authorizeHttpRequests(auth -> auth
