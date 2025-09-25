@@ -10,5 +10,5 @@ public interface UserService {
     boolean signUp(UserAuthDTO newUser);
 
     //유저조회
-    Optional<UserDTO> fetchUserInfo(String mobNum);
+    UserDTO fetchUserInfo(String mobNum);
 }

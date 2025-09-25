@@ -5,7 +5,7 @@ import java.util.List;
 public interface RoomUserRepository {
 
     // 채팅방 유저 조회
-    List getUsersByRoomId(String roomId);
+    List<String> getUsersByRoomId(String roomId);
 
     // 채팅방 유저 추가
     void addUser(String roomId, String mobNum);

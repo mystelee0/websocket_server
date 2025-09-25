@@ -7,11 +7,12 @@ import java.util.*;
 
 @Repository
 public class RoomUserRepositoryImpl implements RoomUserRepository{
+    // 채팅방에 들어가있는 유저정보 저장
     Map<String, Set<String>> rooms = new HashMap<>();
 
     @Override
-    public List getUsersByRoomId(String roomId) {
-        return Arrays.asList(rooms.get(roomId).toArray());
+    public List<String> getUsersByRoomId(String roomId) {
+        return new ArrayList<>(rooms.getOrDefault(roomId, new HashSet<>()));
     }
 
     @Override

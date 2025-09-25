@@ -30,11 +30,11 @@ public class UserController {
     @GetMapping("/users/{mobNum}")
     ResponseEntity getUserInfo(@PathVariable String mobNum){
 
-        Optional<UserDTO> user = userService.fetchUserInfo(mobNum);
+        UserDTO user = userService.fetchUserInfo(mobNum);
 
-        if(user.isEmpty()){
+        if(user==null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("데이터 없음");
         }
-        return ResponseEntity.ok(user.get());
+        return ResponseEntity.ok(user);
     }
 }

@@ -4,6 +4,8 @@ import com.example.websocket_server.dto.UserAuthDTO;
 import com.example.websocket_server.dto.UserDTO;
 import com.example.websocket_server.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,15 +36,22 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Optional<UserDTO> fetchUserInfo(String mobNum) {
+    public UserDTO fetchUserInfo(String mobNum) {
         Optional<UserDTO> user = repo.findUser(mobNum);
-        return user;
+
+        if(user.isEmpty()){
+            return null;
+        }else {
+            UserDTO result = user.get();
+            result.setPassword("");
+            return result;
+        }
     }
 
     @PostConstruct
     public void init(){
         System.out.println("@@@@@ 유저정보 초기화 @@@@@");
         signUp(new UserAuthDTO(new UserDTO("112","경찰","112")));
-        signUp(new UserAuthDTO(new UserDTO("114","상당원","114")));
+        signUp(new UserAuthDTO(new UserDTO("114","상담원","114")));
     }
 }
