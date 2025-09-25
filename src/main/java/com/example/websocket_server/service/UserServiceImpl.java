@@ -3,6 +3,7 @@ package com.example.websocket_server.service;
 import com.example.websocket_server.dto.UserAuthDTO;
 import com.example.websocket_server.dto.UserDTO;
 import com.example.websocket_server.repository.UserRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +37,12 @@ public class UserServiceImpl implements UserService{
     public Optional<UserDTO> fetchUserInfo(String mobNum) {
         Optional<UserDTO> user = repo.findUser(mobNum);
         return user;
+    }
+
+    @PostConstruct
+    public void init(){
+        System.out.println("@@@@@ 유저정보 초기화 @@@@@");
+        signUp(new UserAuthDTO(new UserDTO("112","경찰","112")));
+        signUp(new UserAuthDTO(new UserDTO("114","상당원","114")));
     }
 }

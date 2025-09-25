@@ -48,13 +48,18 @@ public class GreetingController {
                     //메시지 브로커로 직접보낼지 처리하고 보낼지 고민중
                     System.out.println("case 1");
                     //브로드캐스트 메시지 /topic/{roomId}
-                    //this.template.convertAndSend("/topic/", jsonMessage);
+                    //리액트 useWebsocket.js:42 topic/101 구독하였음.
+                    this.template.convertAndSend("/topic/101", jsonMessage);
                     break;
                 case 2:
                     System.out.println("start case 2");
+                    System.out.println(principal.getName());
                     //시스템에 보낸 메시지 /user/{userId}/queue/message
-                    this.template.convertAndSendToUser(principal.getName(),"/queue/message", userMessage.getMessage());
-                    System.out.println("end case 2");
+                    //this.template.convertAndSendToUser(principal.getName(),"/queue/message", userMessage);
+
+                    //브로드캐스트 안하고 개인한테만 감
+                    //리액트 useWebsocket.js:41 유저명으로 구독하였음.
+                    this.template.convertAndSendToUser("114","/queue/message", userMessage);
                     break;
             }
         }

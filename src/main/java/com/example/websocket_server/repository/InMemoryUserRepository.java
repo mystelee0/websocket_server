@@ -2,6 +2,7 @@ package com.example.websocket_server.repository;
 
 import com.example.websocket_server.dto.UserAuthDTO;
 import com.example.websocket_server.dto.UserDTO;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
