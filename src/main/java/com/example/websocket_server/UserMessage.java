@@ -8,7 +8,7 @@ public class UserMessage {
     private String roomId;
     private UserAuthDTO sender;
     private String recv;
-    private String message;
+    private Object message;
     private String date;
 
     public int getMessageType() {
@@ -35,7 +35,7 @@ public class UserMessage {
         this.sender = sender;
     }
 
-    public String getMessage() {
+    public Object getMessage() {
         return message;
     }
 

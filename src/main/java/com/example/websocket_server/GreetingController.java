@@ -1,5 +1,6 @@
 package com.example.websocket_server;
 
+import com.example.websocket_server.dto.UserAuthDTO;
 import com.example.websocket_server.service.RoomUserRegistry;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,7 +32,7 @@ public class GreetingController {
     }
 
     @MessageMapping("/greetings")
-    public void greet(String jsonMessage, Principal principal) {
+    public void greet(String jsonMessage, Principal principal) throws JsonProcessingException {
         System.out.println("JSON Message "+jsonMessage);
 
         // JSON -> Object (UserMessage)  변환
@@ -52,23 +53,39 @@ public class GreetingController {
                     System.out.println("case 1");
                     //브로드캐스트 메시지 /topic/{roomId}
                     //리액트 useWebsocket.js:42 topic/101 구독하였음.
-                    //this.template.convertAndSend("/topic/101", jsonMessage);
-                    List<String> userList = roomUserRegistry.getUsersByRoomId("101");
-                    System.out.println(userList.size());
-                    for(String mobNum : userList){
-                        this.template.convertAndSendToUser(mobNum,"/queue/message", userMessage);
-                    }
+                    System.out.println(userMessage.getRoomId());
+                    String destination = String.format("/topic/%s",userMessage.getRoomId());
+                    System.out.println(destination);
+                    this.template.convertAndSend(destination, jsonMessage);
+
+                    // /user/112/queue/message 테스트
+//                    ObjectMapper test = new ObjectMapper();
+//                    UserMessage message = new UserMessage();
+//                    message.setMessageType(2);
+//                    message.setRoomId("101");
+//                    message.setMessage("잘 가나 테스트");
+//
+//                    String test2 = test.writeValueAsString(message);
+//                    this.template.convertAndSendToUser("112","/queue/message", test2);
+
+//                    List<String> userList = roomUserRegistry.getUsersByRoomId("101");
+//                    System.out.println(userList.size());
+//                    for(String mobNum : userList){
+//                        this.template.convertAndSendToUser(mobNum,"/queue/message", userMessage);
+//                    }
                     break;
                 case 2:
-                    // 유저 초대,방나감 등의 메시지
-                    System.out.println("case 2");
-                    System.out.println(principal.getName());
+                    // 채팅방 생성 메시지 (브로드캐스트 해야함)
+                    System.out.println("case 2 채팅방 생성");
+                    System.out.println(userMessage.getMessage());
+
+                    this.template.convertAndSend("/topic/102", "102 채팅방이 생성되었습니다.");
                     //시스템에 보낸 메시지 /user/{userId}/queue/message
                     //this.template.convertAndSendToUser(principal.getName(),"/queue/message", userMessage);
 
                     //브로드캐스트 안하고 개인한테만 감
                     //리액트 useWebsocket.js:41 유저명으로 구독하였음.
-                    this.template.convertAndSendToUser("114","/queue/message", userMessage);
+                    //this.template.convertAndSendToUser("114","/queue/message", userMessage);
                     break;
             }
         }
