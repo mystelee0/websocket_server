@@ -1,6 +1,5 @@
 package com.example.websocket_server;
 
-import com.example.websocket_server.dto.UserAuthDTO;
 import com.example.websocket_server.service.RoomUserRegistry;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,7 +17,6 @@ import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 public class GreetingController {
@@ -70,8 +68,8 @@ public class GreetingController {
 
 //                    List<String> userList = roomUserRegistry.getUsersByRoomId("101");
 //                    System.out.println(userList.size());
-//                    for(String mobNum : userList){
-//                        this.template.convertAndSendToUser(mobNum,"/queue/message", userMessage);
+//                    for(String id : userList){
+//                        this.template.convertAndSendToUser(id,"/queue/message", userMessage);
 //                    }
                     break;
                 case 2:

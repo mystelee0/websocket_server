@@ -16,12 +16,12 @@ public class RoomUserRepositoryImpl implements RoomUserRepository{
     }
 
     @Override
-    public void addUser(String roomId, String mobNum) {
-        rooms.get(roomId).add(mobNum);
+    public void addUser(String roomId, String id) {
+        rooms.get(roomId).add(id);
     }
 
     @Override
-    public void deleteUser(String roomId, String mobNum) {
+    public void deleteUser(String roomId, String id) {
 
     }
 

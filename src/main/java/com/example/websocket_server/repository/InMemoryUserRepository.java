@@ -1,8 +1,6 @@
 package com.example.websocket_server.repository;
 
-import com.example.websocket_server.dto.UserAuthDTO;
-import com.example.websocket_server.dto.UserDTO;
-import jakarta.annotation.PostConstruct;
+import com.example.websocket_server.entity.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -12,20 +10,19 @@ import java.util.Optional;
 @Repository
 public class InMemoryUserRepository implements UserRepository{
 
-    static Map<String, UserDTO> repo = new HashMap<>();
+    static Map<String, User> repo = new HashMap<>();
 
     @Override
-    public UserDTO saveUser(UserAuthDTO newUser) {
+    public User saveUser(User newUser) {
         System.out.println("인메모리 레파지토리 시작");
 
-        repo.put(newUser.getMobNum(),
-                new UserDTO(newUser.getMobNum(),newUser.getNickName(),newUser.getPassword()));
-        return repo.get(newUser.getMobNum());
+        repo.put(newUser.getId(), newUser);
+        return repo.get(newUser.getId());
     }
 
     @Override
-    public Optional<UserDTO> findUser(String mobNum) {
+    public Optional<User> findUser(String id) {
 
-        return Optional.ofNullable(repo.get(mobNum));
+        return Optional.ofNullable(repo.get(id));
     }
 }

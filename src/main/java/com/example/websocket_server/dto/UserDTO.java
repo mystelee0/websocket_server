@@ -1,76 +1,71 @@
 package com.example.websocket_server.dto;
 
+import com.example.websocket_server.CustomUserDetails;
+import com.example.websocket_server.entity.User;
+
 import java.util.Objects;
 
 public class UserDTO {
-    String mobNum;
-    String nickName;
-    String password;
-    String profileImageUrl;
-    String statusMessage;
+    String id;
+    String name;
+    String profile;
+    String message;
 
-    public UserDTO(String mobNum, String nickName, String password) {
-        this.mobNum = mobNum;
-        this.nickName = nickName;
-        this.password = password;
-        this.profileImageUrl = "";
-        this.statusMessage = "";
+    public UserDTO(){}
+
+    public UserDTO(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.profile = user.getProfile();
+        this.message = user.getMessage();
     }
 
-    public String getProfileImageUrl() {
-        return profileImageUrl;
+    public String getId() {
+        return id;
     }
 
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getStatusMessage() {
-        return statusMessage;
+    public String getName() {
+        return name;
     }
 
-    public void setStatusMessage(String statusMessage) {
-        this.statusMessage = statusMessage;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getMobNum() {
-        return mobNum;
+    public String getProfile() {
+        return profile;
     }
 
-    public void setMobNum(String mobNum) {
-        this.mobNum = mobNum;
+    public void setProfile(String profile) {
+        this.profile = profile;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getMessage() {
+        return message;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     @Override
     public String toString() {
-        return String.format("핸드폰번호 : %s, 닉네임 : %s, 비밀번호 : %s",this.mobNum,this.nickName,this.password);
+        return String.format("핸드폰번호 : %s, 닉네임 : %s, 비밀번호 : %s",this.id,this.name);
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         UserDTO userDTO = (UserDTO) o;
-        return Objects.equals(mobNum, userDTO.mobNum) && Objects.equals(nickName, userDTO.nickName) && Objects.equals(password, userDTO.password);
+        return Objects.equals(id, userDTO.id) && Objects.equals(name, userDTO.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mobNum, nickName, password);
+        return Objects.hash(id, name);
     }
 }

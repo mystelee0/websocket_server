@@ -8,10 +8,10 @@ public interface RoomUserRepository {
     List<String> getUsersByRoomId(String roomId);
 
     // 채팅방 유저 추가
-    void addUser(String roomId, String mobNum);
+    void addUser(String roomId, String id);
 
     // 채팅방 유저 삭제
-    void deleteUser(String roomId, String mobNum);
+    void deleteUser(String roomId, String id);
 
     // 채팅방 생성
     void createRoom(String roomId);

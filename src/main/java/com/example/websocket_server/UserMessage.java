@@ -1,13 +1,12 @@
 package com.example.websocket_server;
 
-import com.example.websocket_server.dto.UserAuthDTO;
+import com.example.websocket_server.dto.UserDTO;
 
 public class UserMessage {
 
     private int messageType; // 1=일반메시지 /topic(broadcast), 2=방초대 메시지
     private String roomId;
-    private UserAuthDTO sender;
-    private String recv;
+    private UserDTO sender;
     private Object message;
     private String date;
 
@@ -27,11 +26,11 @@ public class UserMessage {
         this.roomId = roomId;
     }
 
-    public UserAuthDTO getSender() {
+    public UserDTO getSender() {
         return sender;
     }
 
-    public void setSender(UserAuthDTO sender) {
+    public void setSender(UserDTO sender) {
         this.sender = sender;
     }
 
@@ -41,14 +40,6 @@ public class UserMessage {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public String getRecv() {
-        return recv;
-    }
-
-    public void setRecv(String recv) {
-        this.recv = recv;
     }
 
     public String getDate() {

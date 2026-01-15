@@ -2,6 +2,9 @@ package com.example.websocket_server.controller;
 
 import com.example.websocket_server.CustomUserDetails;
 import com.example.websocket_server.dto.UserAuthDTO;
+import com.example.websocket_server.dto.UserDTO;
+import com.example.websocket_server.entity.User;
+import com.example.websocket_server.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,25 +23,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
     AuthenticationManager authenticationManager;
+    UserService userService;
 
-    AuthController(AuthenticationManager authenticationManager){
-        this. authenticationManager = authenticationManager;
+    AuthController(AuthenticationManager authenticationManager, UserService userService){
+        this.authenticationManager = authenticationManager;
+        this.userService = userService;
     }
 
     @PostMapping("/auth/login")
     ResponseEntity loginRequest(@RequestBody UserAuthDTO user, HttpSession session){
-        System.out.println("로그인 요청 "+user);
+        System.out.println("로그인 요청 "+user.getId()+user.getPassword());
 
         try{
             //인증 토큰 생성
             Authentication authToken = new UsernamePasswordAuthenticationToken(
-                    user.getMobNum(),
+                    user.getId(),
                     user.getPassword()
             );
             //인증 수행 - CustomUserDetailService.loadUserByUsername() 호출
             Authentication authentication = authenticationManager.authenticate(authToken);
 
-            //인증 성공 시 SecurityContext안에 인증정보 저장
+            //인증 성공 시 SecurityContext안에 인증정보 저장 (자동저장해준다함)
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             // SecurityContext를 세션에 저장
@@ -46,9 +51,9 @@ public class AuthController {
 
             CustomUserDetails loginUser = (CustomUserDetails) authentication.getPrincipal();
 
-            //로그인 성공 시, 응답을 위한 객체 생성 (비밀번호 지우고 클라이언트에 전달)
-            UserAuthDTO forResponse = new UserAuthDTO(loginUser.getUser());
-            forResponse.setPassword(null);
+            // id로 조회 반환
+            User foundUser = userService.fetchUserInfo(loginUser.getUsername());
+            UserDTO forResponse = new UserDTO(foundUser);
             return ResponseEntity.ok(forResponse);
 
         }catch (AuthenticationException e){
@@ -63,8 +68,11 @@ public class AuthController {
         if(user==null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
         }
-        UserAuthDTO forResponse = new UserAuthDTO(user.getUser());
-        forResponse.setPassword(null);
+
+        User foundUser = userService.fetchUserInfo(user.getUsername());
+        UserDTO forResponse = new UserDTO(foundUser);
+
         return ResponseEntity.ok(forResponse);
     }
+
 }

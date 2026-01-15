@@ -1,15 +1,14 @@
 package com.example.websocket_server.service;
 
+import com.example.websocket_server.CustomUserDetails;
 import com.example.websocket_server.dto.UserAuthDTO;
 import com.example.websocket_server.dto.UserDTO;
+import com.example.websocket_server.entity.User;
 import com.example.websocket_server.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -26,24 +25,33 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean signUp(UserAuthDTO newUser) {
         System.out.println("회원가입 서비스 시작");
+
+        // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(newUser.getPassword());
         System.out.println("인코딩 결과 "+encodedPassword);
-        newUser.setPassword(encodedPassword);
 
-        UserDTO savedUser = repo.saveUser(newUser);
+        // 유저객체에 정보 대입
+        User user = new User();
+        user.setPassword(encodedPassword);
+        user.setId(newUser.getId());
+        user.setName(newUser.getName());
+        user.setMessage("");
+        user.setProfile("/114_profile.jpg");
+        // 저장
+        User savedUser = repo.saveUser(user);
 
-        return Objects.equals(newUser,savedUser);
+        // 결과확인
+        return savedUser != null;
     }
 
     @Override
-    public UserDTO fetchUserInfo(String mobNum) {
-        Optional<UserDTO> user = repo.findUser(mobNum);
+    public User fetchUserInfo(String id) {
+        Optional<User> OptionalUser = repo.findUser(id);
 
-        if(user.isEmpty()){
+        if(OptionalUser.isEmpty()){
             return null;
         }else {
-            UserDTO result = user.get();
-            result.setPassword("");
+            User result = OptionalUser.get();
             return result;
         }
     }
@@ -51,7 +59,8 @@ public class UserServiceImpl implements UserService{
     @PostConstruct
     public void init(){
         System.out.println("@@@@@ 유저정보 초기화 @@@@@");
-        signUp(new UserAuthDTO(new UserDTO("112","경찰","112")));
-        signUp(new UserAuthDTO(new UserDTO("114","상담원","114")));
+
+        signUp(new UserAuthDTO("112","경찰","112"));
+        signUp(new UserAuthDTO("114","상담원","114"));
     }
 }

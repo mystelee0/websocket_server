@@ -1,6 +1,6 @@
 package com.example.websocket_server;
 
-import com.example.websocket_server.dto.UserAuthDTO;
+import com.example.websocket_server.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,15 +9,14 @@ import java.util.List;
 
 public class CustomUserDetails implements UserDetails {
 
-    UserAuthDTO user;
+    private String id;
+    private String password;
 
-    public CustomUserDetails(UserAuthDTO user){
-        this.user=user;
+    public CustomUserDetails(User user){
+        this.id = user.getId();
+        this.password = user.getPassword();
     }
 
-    public UserAuthDTO getUser(){
-        return user;
-    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(); // 권한 없으면 빈 리스트
@@ -25,12 +24,12 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword(); // 또는 getPwd()
+        return this.password; // 또는 getPwd()
     }
 
     @Override
     public String getUsername() {
-        return user.getMobNum(); // 사용자 식별자 (아이디 역할)
+        return this.id; // 사용자 식별자 (아이디 역할)
     }
 
     // 아래는 보통 true로 처리
